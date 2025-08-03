@@ -3,8 +3,8 @@ version: '3.5'
 x-services-volume:
   &dev-volume
   type: bind
-  source: ./dev
-  target: /dev
+  source: ./develop
+  target: /develop
  
 services:
     # mysql 8.4
@@ -35,15 +35,12 @@ services:
     nginx:
         # image name
         image: nginx:1.29-alpine
-        # Wait until "laravel" container is ready
-        depends_on:
-        - laravel
         # Which port should be exposed
         ports:
         - 8080:8080
         volumes:
         # Where to find the files to serve
-        - *laravel-volume
+        - *dev-volume
         # Where to save nginx logs.
         - ./logs:/var/log/nginx
         # Where to load default.conf.
@@ -58,4 +55,3 @@ networks:
         driver: "bridge"
 volumes:
     db-store:
-    
